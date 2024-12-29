@@ -47,6 +47,8 @@ class FontFiles(object):
             return cls._os_x_font_directories()
         if sys.platform.startswith("win32"):
             return cls._windows_font_directories()
+        if sys.platform.startswith("linux"):
+            return cls._linux_font_directories()
         raise OSError("unsupported operating system")
 
     @classmethod
@@ -91,6 +93,13 @@ class FontFiles(object):
         likely to be located.
         """
         return [r"C:\Windows\Fonts"]
+    @classmethod
+    def _linux_font_directories(cls):
+        #get fornts path form env variable
+        path = os.environ.get("FONTS_DIR")
+        if path is not None:
+            return [path]        
+        return ["/usr/share/fonts", "/usr/share/fonts/truetype/dejavu","~/.fonts" ]
 
 
 class _Font(object):
